@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
+import React, { useState, useEffect, useRef } from "react";
 import ConfirmationModal from "./ConfirmationModal";
+import EventName from "./EventName";
 
 interface SidebarProps {
   events: { id: number; name: string }[];
@@ -73,11 +73,55 @@ const Sidebar: React.FC<SidebarProps> = ({
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const menuRef = useRef<HTMLDivElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      // Check if the click is outside both the menu and the input
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(e.target as Node) &&
+        inputRef.current &&
+        !inputRef.current.contains(e.target as Node)
+      ) {
+        setMenuOpenId(null);
+        setEditingEventId(null);
+        setTempEventName("");
+      } else if (
+        menuRef.current &&
+        !menuRef.current.contains(e.target as Node)
+      ) {
+        // If the click is outside the menu but not outside the input, only close the menu
+        setMenuOpenId(null);
+      } else if (
+        inputRef.current &&
+        !inputRef.current.contains(e.target as Node)
+      ) {
+        // If the click is outside the input but not the menu, only close the input
+        setEditingEventId(null);
+        setTempEventName("");
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [menuOpenId, editingEventId]);
+
+  useEffect(() => {
+    if (editingEventId !== null && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [editingEventId]);
+
   return (
     <div
-      className={`h-full ${
-        isSidebarOpen ? "w-64" : "w-16"
-      } transition-all duration-300 bg-gray-200`}
+      className={`h-max min-h-full pb-4 ${
+        isSidebarOpen ? "w-64 bg-gray-200" : "w-16 bg-transparent"
+      } transition-all duration-300`}
     >
       <div className="flex items-center justify-between p-4">
         <button
@@ -140,18 +184,23 @@ const Sidebar: React.FC<SidebarProps> = ({
       </div>
       {isSidebarOpen && (
         <>
-          <h2 className="text-xl font-bold mb-4 px-4">My Events</h2>
-          <div className="flex-1 overflow-y-auto px-4">
+          <div className="flex-1 px-4 grow-0 overflow-auto">
             {events.map((event) => (
               <div
                 key={event.id}
-                className={`p-2 mb-2 bg-white cursor-pointer hover:bg-gray-100 ${
-                  selectedEventId === event.id ? "bg-blue-100" : ""
+                className={`p-2 mb-2 cursor-pointer hover:bg-gray-300 rounded-lg group ${
+                  selectedEventId === event.id ||
+                  menuOpenId === event.id ||
+                  editingEventId === event.id ||
+                  eventToDelete === event.id
+                    ? "bg-gray-300"
+                    : "bg-gray-200"
                 }`}
-                onMouseEnter={() => setMenuOpenId(null)}
+                onClick={() => selectEvent(event.id)} // Make the entire div clickable to select the event
               >
                 {editingEventId === event.id ? (
                   <input
+                    ref={inputRef}
                     type="text"
                     value={tempEventName}
                     onChange={handleNameChange}
@@ -161,52 +210,69 @@ const Sidebar: React.FC<SidebarProps> = ({
                         : e.key === "Escape" && handleCancel()
                     }
                     onBlur={() => handleSave(event.id)}
-                    className="w-full p-1 border rounded"
+                    className="w-full border pl-1 rounded bg-transparent"
                   />
                 ) : (
                   <div className="flex justify-between items-center">
-                    <span onClick={() => selectEvent(event.id)}>
-                      {event.name}
-                    </span>
-                    <div className="relative">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setMenuOpenId(event.id);
-                        }}
-                        className="text-gray-500 hover:text-gray-700 ml-2"
+                    <EventName
+                      name={event.name}
+                      selectEvent={() => selectEvent(event.id)}
+                      isSelected={
+                        selectedEventId === event.id ||
+                        menuOpenId === event.id ||
+                        editingEventId === event.id ||
+                        eventToDelete === event.id
+                      }
+                      menuOpen={menuOpenId === event.id}
+                      disableAnimation={
+                        menuOpenId === event.id ||
+                        editingEventId === event.id ||
+                        eventToDelete === event.id
+                      }
+                    />
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent event selection when menu is opened
+                        setMenuOpenId(event.id);
+                      }}
+                      className={`text-gray-500 ml-2 transition-opacity duration-200 ${
+                        selectedEventId === event.id || menuOpenId === event.id
+                          ? "opacity-100"
+                          : "hidden group-hover:inline-block"
+                      }`}
+                    >
+                      ⋯
+                    </button>
+                    {menuOpenId === event.id && (
+                      <div
+                        ref={menuRef}
+                        className="absolute left-56 mt-20 w-24 bg-white border rounded shadow-lg z-50"
                       >
-                        ...
-                      </button>
-                      {menuOpenId === event.id && (
-                        <div className="absolute right-0 mt-2 w-24 bg-white border rounded shadow-lg z-10">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleEditClick(event.id, event.name);
-                            }}
-                            className="block w-full px-2 py-1 text-left hover:bg-gray-100"
-                          >
-                            Rename
-                          </button>
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleDeleteClick(event.id);
-                            }}
-                            className="block w-full px-2 py-1 text-left hover:bg-gray-100 text-red-500"
-                          >
-                            Delete
-                          </button>
-                        </div>
-                      )}
-                    </div>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleEditClick(event.id, event.name);
+                          }}
+                          className="block w-full px-2 py-1 text-left hover:bg-gray-100"
+                        >
+                          Rename
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteClick(event.id);
+                          }}
+                          className="block w-full px-2 py-1 text-left hover:bg-gray-100 text-red-500"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
             ))}
           </div>
-          {/* Confirmation Modal */}
           <ConfirmationModal
             isOpen={showModal}
             onClose={handleModalClose}

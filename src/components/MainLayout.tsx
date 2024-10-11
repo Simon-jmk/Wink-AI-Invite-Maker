@@ -11,7 +11,8 @@ interface EventData {
   name: string;
   location: string;
   date: string;
-  time: string;
+  startTime: string;
+  endTime: string;
   theme: string;
 }
 
@@ -20,9 +21,10 @@ const MainLayout: React.FC = () => {
     {
       id: 1,
       name: "Birthday Party",
-      location: "",
+      location: "Hello",
       date: "",
-      time: "",
+      startTime: "",
+      endTime: "",
       theme: "",
     },
     {
@@ -30,7 +32,8 @@ const MainLayout: React.FC = () => {
       name: "Christmas Event",
       location: "",
       date: "",
-      time: "",
+      startTime: "",
+      endTime: "",
       theme: "",
     },
   ]);
@@ -51,7 +54,8 @@ const MainLayout: React.FC = () => {
       name: `New Event ${newEventId}`,
       location: "",
       date: "",
-      time: "",
+      startTime: "",
+      endTime: "",
       theme: "",
     };
     setEvents((prevEvents) => [...prevEvents, newEvent]);
@@ -63,7 +67,8 @@ const MainLayout: React.FC = () => {
   const handleFormComplete = (data: {
     location: string;
     date: string;
-    time: string;
+    startTime: string;
+    endTime: string;
     theme: string;
   }) => {
     setEvents((prevEvents) =>

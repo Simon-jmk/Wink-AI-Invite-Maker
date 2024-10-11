@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import ChatMessage from "./ChatMessage";
 
 interface ChatInterfaceProps {
-  initialData: { location: string; date: string; time: string; theme: string };
+  initialData: { location: string; date: string; startTime: string; endTime: string; theme: string };
   closeChat: () => void;
 }
 
@@ -38,9 +38,22 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     <div className="flex flex-col h-full">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold">Chat with AI</h2>
-        <Button variant="outline" onClick={closeChat}>
-          Close
-        </Button>
+        <button onClick={closeChat}>
+        <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="2"
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+        </button>
       </div>
       <div className="flex-1 p-4 space-y-4 overflow-y-auto bg-gray-50">
         {messages.map((message) => (

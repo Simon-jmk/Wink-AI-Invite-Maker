@@ -10,13 +10,15 @@ interface EventFormProps {
     name: string;
     location: string;
     date: string;
-    time: string;
+    startTime: string;
+    endTime: string;
     theme: string;
   };
   onComplete: (data: {
     location: string;
     date: string;
-    time: string;
+    startTime: string;
+    endTime: string;
     theme: string;
   }) => void;
 }
@@ -25,7 +27,8 @@ const EventForm: React.FC<EventFormProps> = ({ eventData, onComplete }) => {
   const [formData, setFormData] = useState({
     location: eventData.location,
     date: eventData.date,
-    time: eventData.time,
+    startTime: eventData.startTime, // Changed to startTime
+    endTime: eventData.endTime,
     theme: eventData.theme,
   });
 
@@ -33,7 +36,8 @@ const EventForm: React.FC<EventFormProps> = ({ eventData, onComplete }) => {
     setFormData({
       location: eventData.location,
       date: eventData.date,
-      time: eventData.time,
+      startTime: eventData.startTime,
+      endTime: eventData.endTime, // Reset endTime when eventData changes
       theme: eventData.theme,
     });
   }, [eventData]);
@@ -68,8 +72,15 @@ const EventForm: React.FC<EventFormProps> = ({ eventData, onComplete }) => {
       />
       <Input
         type="time"
-        name="time"
-        value={formData.time}
+        name="startTime"
+        value={formData.startTime}
+        onChange={handleChange}
+        className="mb-4"
+      />
+      <Input
+        type="time"
+        name="endTime"
+        value={formData.endTime}
         onChange={handleChange}
         className="mb-4"
       />
@@ -80,9 +91,17 @@ const EventForm: React.FC<EventFormProps> = ({ eventData, onComplete }) => {
         className="w-full mb-4 p-2 border rounded"
       >
         <option value="">Select a theme</option>
-        <option value="christmas">Christmas</option>
-        <option value="halloween">Halloween</option>
-        <option value="birthday">Birthday</option>
+        <option value="Valborg">Valborg</option>
+        <option value="Spring">Spring</option>
+        <option value="Easter">Easter</option>
+        <option value="Midsummer">Midsummer</option>
+        <option value="Summer">Summer</option>
+        <option value="Autumn">Autumn</option>
+        <option value="Halloween">Halloween</option>
+        <option value="Winter">Winter</option>
+        <option value="Lucia">Lucia</option>
+        <option value="Christmas">Christmas</option>
+        <option value="New Year">New Year</option>
       </select>
       <Button onClick={handleNext}>Complete</Button>
     </div>

@@ -4,7 +4,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 
 interface EventPreviewProps {
-  data: { location: string; date: string; time: string; theme: string };
+  data: { location: string; date: string; startTime: string; endTime: string; theme: string };
   startChat: () => void;
 }
 
@@ -19,7 +19,10 @@ const EventPreview: React.FC<EventPreviewProps> = ({ data, startChat }) => {
         <strong>Date:</strong> {data.date}
       </p>
       <p>
-        <strong>Time:</strong> {data.time}
+        <strong> Start:</strong> {data.startTime}
+      </p>
+      <p>
+        <strong>Ends:</strong> {data.endTime}
       </p>
       <p>
         <strong>Theme:</strong> {data.theme}
