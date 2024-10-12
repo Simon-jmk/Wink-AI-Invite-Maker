@@ -13,6 +13,9 @@ interface EventData {
   date: string;
   startTime: string;
   endTime: string;
+  textColor: string;
+  bgColor: string;
+  fgColor: string;
   theme: string;
 }
 
@@ -25,6 +28,9 @@ const MainLayout: React.FC = () => {
       date: "",
       startTime: "",
       endTime: "",
+      textColor: "",
+      bgColor: "",
+      fgColor: "",
       theme: "",
     },
     {
@@ -34,6 +40,9 @@ const MainLayout: React.FC = () => {
       date: "",
       startTime: "",
       endTime: "",
+      textColor: "",
+      bgColor: "",
+      fgColor: "",
       theme: "",
     },
   ]);
@@ -56,6 +65,9 @@ const MainLayout: React.FC = () => {
       date: "",
       startTime: "",
       endTime: "",
+      textColor: "",
+      bgColor: "",
+      fgColor: "",
       theme: "",
     };
     setEvents((prevEvents) => [...prevEvents, newEvent]);
@@ -111,9 +123,7 @@ const MainLayout: React.FC = () => {
       <div className="flex-1 bg-white p-4 overflow-y-auto">
         {selectedEvent && selectedEventData && (
           <>
-            <h2 className="text-2xl font-bold mb-4">
-              {selectedEventData.name}
-            </h2>
+
             {!formCompleted && (
               <EventForm
                 eventData={selectedEventData}
@@ -123,7 +133,6 @@ const MainLayout: React.FC = () => {
             {formCompleted && (
               <EventPreview
                 data={selectedEventData}
-                startChat={() => setChatVisible(true)}
               />
             )}
           </>
@@ -131,7 +140,7 @@ const MainLayout: React.FC = () => {
       </div>
       {/* Right Chat Sidebar */}
       {chatVisible && selectedEventData && (
-        <div className="w-80 bg-gray-100 border-l border-gray-300 p-4 h-full fixed right-0 top-0 shadow-lg">
+        <div className="w-16 bg-transparent h-full">
           <ChatInterface
             initialData={selectedEventData}
             closeChat={handleCloseChat}

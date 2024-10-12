@@ -22,10 +22,9 @@ const EventName: React.FC<{ name: string; selectEvent: () => void; isSelected: b
   }, [name]);
 
   useEffect(() => {
-    // Only start the typing animation if the event is selected and disableAnimation is false
     if (isSelected && !disableAnimation) {
-      setDisplayedText(""); // Clear the text before starting the animation
-      let index = -1; // Start at 0
+      setDisplayedText("");
+      let index = -1;
   
       const interval = setInterval(() => {
         setDisplayedText((prev) => prev + (name[index] || ""));
@@ -33,12 +32,9 @@ const EventName: React.FC<{ name: string; selectEvent: () => void; isSelected: b
         if (index >= name.length) {
           clearInterval(interval);
         }
-      }, 60); // Adjust speed as needed
-  
-      // Cleanup interval when the component unmounts or updates
+      }, 60);
       return () => clearInterval(interval);
     } else {
-      // If the event is not selected or animation is disabled, display the name as usual
       setDisplayedText(name);
     }
   }, [isSelected, name, disableAnimation]);
