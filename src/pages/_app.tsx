@@ -1,5 +1,7 @@
+require('dotenv').config();
+
 import type { AppProps } from "next/app";
-import "@/styles/globals.css";
+import "../app/globals.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return <Component {...pageProps} />;

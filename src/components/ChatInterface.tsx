@@ -110,6 +110,11 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ initialData }) => {
                     placeholder="Type your message..."
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        handleSendMessage();
+                      }
+                    }}
                     className="flex-1"
                   />
                   <Button

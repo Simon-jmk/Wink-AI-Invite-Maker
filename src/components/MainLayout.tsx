@@ -5,24 +5,33 @@ import Sidebar from "./Sidebar";
 import EventForm from "./EventForm";
 import EventPreview from "./EventPreview";
 import ChatInterface from "./ChatInterface";
+import { title } from "process";
 
 interface EventData {
   id: number;
   name: string;
+  title: string;
   location: string;
   date: string;
   startTime: string;
   endTime: string;
   textColor: string;
   bgColor: string;
+  bgSecondColor: string;
   fgColor: string;
   theme: string;
+  eventType: string;
+  season: string;
+  format: string;
+  style: string;
+  quantity: number;
 }
 
 const MainLayout: React.FC = () => {
   const [events, setEvents] = useState<EventData[]>([
     {
       id: 1,
+      title: "Sample Event Title",
       name: "Birthday Party",
       location: "Hello",
       date: "",
@@ -30,11 +39,18 @@ const MainLayout: React.FC = () => {
       endTime: "",
       textColor: "",
       bgColor: "",
+      bgSecondColor: "",
       fgColor: "",
       theme: "",
+      eventType: "",
+      season: "",
+      format: "",
+      style: "",
+      quantity: 1,
     },
     {
       id: 2,
+      title: "Sample Event Title",
       name: "Christmas Event",
       location: "",
       date: "",
@@ -42,8 +58,14 @@ const MainLayout: React.FC = () => {
       endTime: "",
       textColor: "",
       bgColor: "",
+      bgSecondColor: "",
       fgColor: "",
       theme: "",
+      eventType: "",
+      season: "",
+      format: "",
+      style: "",
+      quantity: 1,
     },
   ]);
   const [selectedEvent, setSelectedEvent] = useState<number | null>(null);
@@ -58,8 +80,9 @@ const MainLayout: React.FC = () => {
 
   const handleCreateNewEvent = () => {
     const newEventId = events.length + 1;
-    const newEvent = {
+    const newEvent: EventData = {
       id: newEventId,
+      title: "",
       name: `New Event ${newEventId}`,
       location: "",
       date: "",
@@ -67,8 +90,14 @@ const MainLayout: React.FC = () => {
       endTime: "",
       textColor: "",
       bgColor: "",
+      bgSecondColor: "",
       fgColor: "",
       theme: "",
+      eventType: "",
+      season: "",
+      format: "",
+      style: "",
+      quantity: 1,
     };
     setEvents((prevEvents) => [...prevEvents, newEvent]);
     setSelectedEvent(newEventId);
@@ -123,24 +152,19 @@ const MainLayout: React.FC = () => {
       <div className="flex-1 bg-white p-4 overflow-y-auto">
         {selectedEvent && selectedEventData && (
           <>
-
             {!formCompleted && (
               <EventForm
                 eventData={selectedEventData}
                 onComplete={handleFormComplete}
               />
             )}
-            {formCompleted && (
-              <EventPreview
-                data={selectedEventData}
-              />
-            )}
+            {formCompleted && <EventPreview data={selectedEventData} />}
           </>
         )}
       </div>
       {/* Right Chat Sidebar */}
       {chatVisible && selectedEventData && (
-        <div className="w-16 bg-transparent h-full">
+        <div className="w-0 bg-transparent h-full">
           <ChatInterface
             initialData={selectedEventData}
             closeChat={handleCloseChat}
