@@ -14,9 +14,13 @@ interface ChatInterfaceProps {
     theme: string;
   };
   closeChat: () => void;
+  onNewPrompt: (newPrompt: string) => void; // Add this property
 }
 
-const ChatInterface: React.FC<ChatInterfaceProps> = ({ initialData }) => {
+const ChatInterface: React.FC<ChatInterfaceProps> = ({
+  initialData,
+  onNewPrompt,
+}) => {
   const [messages, setMessages] = useState<
     { id: number; text: string; type: "user" | "bot" }[]
   >([]);
@@ -25,12 +29,14 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ initialData }) => {
 
   const handleSendMessage = () => {
     if (inputValue.trim()) {
+      // Call onNewPrompt to pass the new prompt to the parent component
+      onNewPrompt(inputValue);
       setMessages((prevMessages) => [
         ...prevMessages,
         { id: prevMessages.length + 1, text: inputValue, type: "user" },
         {
           id: prevMessages.length + 2,
-          text: `AI response to: ${inputValue}`,
+          text: `Added to custom prompts: ${inputValue}`,
           type: "bot",
         },
       ]);
@@ -107,7 +113,6 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ initialData }) => {
               <div className="p-4 bg-white rounded-b-lg shadow-xl">
                 <div className="flex items-center space-x-2">
                   <Input
-                    placeholder="Type your message..."
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     onKeyDown={(e) => {
@@ -115,14 +120,9 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ initialData }) => {
                         handleSendMessage();
                       }
                     }}
-                    className="flex-1"
+                    placeholder="Type your message..."
                   />
-                  <Button
-                    onClick={handleSendMessage}
-                    className="bg-blue-500 hover:bg-blue-700 active:bg-blue-900"
-                  >
-                    Send
-                  </Button>
+                  <Button onClick={handleSendMessage}>Send</Button>
                 </div>
               </div>
             </div>

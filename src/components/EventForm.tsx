@@ -51,10 +51,10 @@ const EventForm: React.FC<EventFormProps> = ({ eventData, onComplete }) => {
     date: eventData.date,
     startTime: eventData.startTime,
     endTime: eventData.endTime,
-    textColor: { hex: eventData.textColor || "#000000" },  // Initialize with eventData
-    fgColor: { hex: eventData.fgColor || "#FFFFFF" },      // Initialize with eventData
-    bgColor: { hex: eventData.bgColor || "#FF0000" },      // Initialize with eventData
-    bgSecondColor: { hex: eventData.bgSecondColor || "#00FF00" }, // Initialize with eventData
+    textColor: { hex: eventData.textColor || "#000000" },
+    fgColor: { hex: eventData.fgColor || "#FFFFFF" },
+    bgColor: { hex: eventData.bgColor || "#FF0000" },
+    bgSecondColor: { hex: eventData.bgSecondColor || "#00FF00" },
     theme: eventData.theme,
     eventType: eventData.eventType,
     season: eventData.season,
@@ -70,10 +70,10 @@ const EventForm: React.FC<EventFormProps> = ({ eventData, onComplete }) => {
       date: eventData.date,
       startTime: eventData.startTime,
       endTime: eventData.endTime,
-      textColor: { hex: eventData.textColor || "#000000" },
-      fgColor: { hex: eventData.fgColor || "#FFFFFF" },
-      bgColor: { hex: eventData.bgColor || "#FF0000" },
-      bgSecondColor: { hex: eventData.bgSecondColor || "#00FF00" },
+      textColor: { hex: eventData.textColor},
+      fgColor: { hex: eventData.fgColor },
+      bgColor: { hex: eventData.bgColor },
+      bgSecondColor: { hex: eventData.bgSecondColor },
       theme: eventData.theme,
       season: eventData.season,
       eventType: eventData.eventType,
@@ -204,6 +204,7 @@ const EventForm: React.FC<EventFormProps> = ({ eventData, onComplete }) => {
             >
               <option value="">Select an event type</option>
               <option value="Wedding">Wedding</option>
+              <option value="Party">Party</option>
               <option value="Birthday Party">Birthday Party</option>
               <option value="Corporate Event">Corporate Event</option>
               <option value="Graduation Party">Graduation Party</option>

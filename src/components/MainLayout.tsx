@@ -1,11 +1,8 @@
-"use client";
-
 import React, { useState } from "react";
 import Sidebar from "./Sidebar";
 import EventForm from "./EventForm";
 import EventPreview from "./EventPreview";
 import ChatInterface from "./ChatInterface";
-import { title } from "process";
 
 interface EventData {
   id: number;
@@ -25,6 +22,7 @@ interface EventData {
   format: string;
   style: string;
   quantity: number;
+  prompts: string[]; // Add prompts property to EventData
 }
 
 const MainLayout: React.FC = () => {
@@ -47,6 +45,7 @@ const MainLayout: React.FC = () => {
       format: "",
       style: "",
       quantity: 1,
+      prompts: [], // Add prompts to each event
     },
     {
       id: 2,
@@ -66,41 +65,21 @@ const MainLayout: React.FC = () => {
       format: "",
       style: "",
       quantity: 1,
+      prompts: [], // Add prompts to each event
     },
   ]);
+
   const [selectedEvent, setSelectedEvent] = useState<number | null>(null);
   const [formCompleted, setFormCompleted] = useState(false);
   const [chatVisible, setChatVisible] = useState(false);
+  const [prompts, setPrompts] = useState<string[]>([]); // Add prompts state here
 
   const handleSelectEvent = (id: number) => {
     setSelectedEvent(id);
-    setFormCompleted(false);
-    setChatVisible(false);
-  };
-
-  const handleCreateNewEvent = () => {
-    const newEventId = events.length + 1;
-    const newEvent: EventData = {
-      id: newEventId,
-      title: "",
-      name: `New Event ${newEventId}`,
-      location: "",
-      date: "",
-      startTime: "",
-      endTime: "",
-      textColor: "",
-      bgColor: "",
-      bgSecondColor: "",
-      fgColor: "",
-      theme: "",
-      eventType: "",
-      season: "",
-      format: "",
-      style: "",
-      quantity: 1,
-    };
-    setEvents((prevEvents) => [...prevEvents, newEvent]);
-    setSelectedEvent(newEventId);
+    const selectedEvent = events.find((event) => event.id === id);
+    if (selectedEvent) {
+      setPrompts(selectedEvent.prompts || []); // Load event-specific prompts
+    }
     setFormCompleted(false);
     setChatVisible(false);
   };
@@ -135,6 +114,43 @@ const MainLayout: React.FC = () => {
     setEvents((prevEvents) => prevEvents.filter((event) => event.id !== id));
   };
 
+  const handleCreateNewEvent = () => {
+    const newEvent: EventData = {
+      id: events.length + 1,
+      title: "New Event",
+      name: "New Event Name",
+      location: "",
+      date: "",
+      startTime: "",
+      endTime: "",
+      textColor: "",
+      bgColor: "",
+      bgSecondColor: "",
+      fgColor: "",
+      theme: "",
+      eventType: "",
+      season: "",
+      format: "",
+      style: "",
+      quantity: 1,
+      prompts: [], // Add prompts to new event
+    };
+    setEvents((prevEvents) => [...prevEvents, newEvent]);
+    setSelectedEvent(newEvent.id);
+    setFormCompleted(false);
+    setChatVisible(false);
+  };
+
+  const handleNewPrompt = (newPrompt: string) => {
+    setEvents((prevEvents) =>
+      prevEvents.map((event) =>
+        event.id === selectedEvent
+          ? { ...event, prompts: [...(event.prompts || []), newPrompt] }
+          : event
+      )
+    );
+  };
+
   const selectedEventData = events.find((event) => event.id === selectedEvent);
 
   return (
@@ -158,7 +174,12 @@ const MainLayout: React.FC = () => {
                 onComplete={handleFormComplete}
               />
             )}
-            {formCompleted && <EventPreview data={selectedEventData} />}
+            {formCompleted && selectedEventData && (
+              <EventPreview
+                data={selectedEventData}
+                prompts={selectedEventData.prompts || []}
+              />
+            )}
           </>
         )}
       </div>
@@ -168,6 +189,7 @@ const MainLayout: React.FC = () => {
           <ChatInterface
             initialData={selectedEventData}
             closeChat={handleCloseChat}
+            onNewPrompt={handleNewPrompt}
           />
         </div>
       )}
