@@ -148,7 +148,7 @@ const EventForm: React.FC<EventFormProps> = ({ eventData, onComplete }) => {
                 placeholder="Name your event"
                 value={formData.title}
                 onChange={handleChange}
-                className="mb-4 w-full"
+                className="mb-4 w-full bg-white"
               />
             </div>
             <div>
@@ -159,7 +159,7 @@ const EventForm: React.FC<EventFormProps> = ({ eventData, onComplete }) => {
                 placeholder="Location of your event"
                 value={formData.location}
                 onChange={handleChange}
-                className="w-full"
+                className="w-full bg-white"
               />
             </div>
           </div>
@@ -171,6 +171,7 @@ const EventForm: React.FC<EventFormProps> = ({ eventData, onComplete }) => {
                 name="startTime"
                 value={formData.startTime}
                 onChange={handleChange}
+                className="bg-white"
               />
             </div>
             <div>
@@ -180,6 +181,7 @@ const EventForm: React.FC<EventFormProps> = ({ eventData, onComplete }) => {
                 name="endTime"
                 value={formData.endTime}
                 onChange={handleChange}
+                className="bg-white"
               />
             </div>
             <div>
@@ -189,6 +191,7 @@ const EventForm: React.FC<EventFormProps> = ({ eventData, onComplete }) => {
                 name="date"
                 value={formData.date}
                 onChange={handleChange}
+                className="bg-white"
               />
             </div>
           </div>

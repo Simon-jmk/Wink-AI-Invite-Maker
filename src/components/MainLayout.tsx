@@ -154,47 +154,59 @@ const MainLayout: React.FC = () => {
   const selectedEventData = events.find((event) => event.id === selectedEvent);
 
   return (
-    <div className="flex h-screen">
+    <div className="flex flex-col h-screen">
+      {/* Heading */}
+      <h1
+        className="absolute top-4 left-0 right-0 text-center text-5xl font-bold mt-4"
+        style={{
+          fontFamily: "'Rammetto One'",
+          color: "#283c9f",
+          zIndex: 100,
+        }}
+      >
+        Wink
+      </h1>
       {/* Left Sidebar */}
-      <Sidebar
-        events={events}
-        selectedEventId={selectedEvent}
-        selectEvent={handleSelectEvent}
-        createNewEvent={handleCreateNewEvent}
-        onEventNameChange={handleEventNameChange}
-        onDeleteEvent={handleDeleteEvent}
-      />
-      {/* Main Content Area */}
-      <div className="flex-1 bg-white p-4 overflow-y-auto">
-        {selectedEvent && selectedEventData && (
-          <>
-            {!formCompleted && (
-              <EventForm
-                eventData={selectedEventData}
-                onComplete={handleFormComplete}
-              />
-            )}
-            {formCompleted && selectedEventData && (
-              <EventPreview
-                data={selectedEventData}
-                prompts={selectedEventData.prompts || []}
-              />
-            )}
-          </>
+      <div className="flex flex-1">
+        <Sidebar
+          events={events}
+          selectedEventId={selectedEvent}
+          selectEvent={handleSelectEvent}
+          createNewEvent={handleCreateNewEvent}
+          onEventNameChange={handleEventNameChange}
+          onDeleteEvent={handleDeleteEvent}
+        />
+        {/* Main Content Area */}
+        <div className="flex-1 bg-[#f6f6ea] p-4 overflow-y-auto pt-24">
+          {selectedEvent && selectedEventData && (
+            <>
+              {!formCompleted && (
+                <EventForm
+                  eventData={selectedEventData}
+                  onComplete={handleFormComplete}
+                />
+              )}
+              {formCompleted && selectedEventData && (
+                <EventPreview
+                  data={selectedEventData}
+                  prompts={selectedEventData.prompts || []}
+                />
+              )}
+            </>
+          )}
+        </div>
+        {/* Right Chat Sidebar */}
+        {chatVisible && selectedEventData && (
+          <div className="w-0 bg-transparent h-full">
+            <ChatInterface
+              initialData={selectedEventData}
+              closeChat={handleCloseChat}
+              onNewPrompt={handleNewPrompt}
+            />
+          </div>
         )}
       </div>
-      {/* Right Chat Sidebar */}
-      {chatVisible && selectedEventData && (
-        <div className="w-0 bg-transparent h-full">
-          <ChatInterface
-            initialData={selectedEventData}
-            closeChat={handleCloseChat}
-            onNewPrompt={handleNewPrompt}
-          />
-        </div>
-      )}
     </div>
   );
 };
-
 export default MainLayout;

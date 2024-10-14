@@ -61,10 +61,10 @@ const EventPreview: React.FC<EventPreviewProps> = ({ data, prompts }) => {
   };
 
   return (
-    <div className="relative flex gap-32 p-24 flex-wrap">
+    <div className="relative flex px-8 py-4 flex-wrap">
       {/* Main content - blurred when loading */}
       <div className={`${loading ? "blur-sm" : ""} w-full`}>
-        <div className="flex justify-around p-24 flex-wrap gap-8">
+        <div className="flex justify-around flex-wrap gap-8">
           <div className="p-4 flex flex-col gap-2">
             <h2 className="text-xl font-bold mb-4">Event Preview</h2>
             <p>

@@ -120,7 +120,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   return (
     <div
       className={`h-max min-h-full pb-4 ${
-        isSidebarOpen ? "w-64 bg-gray-200" : "w-8 bg-transparent"
+        isSidebarOpen ? "w-64 bg-gray-200" : "w-8 bg-[#f6f6ea]"
       } transition-all duration-300`}
     >
       <div className="flex items-center justify-between p-4">
