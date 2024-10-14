@@ -157,7 +157,7 @@ const MainLayout: React.FC = () => {
     <div className="flex flex-col h-screen">
       {/* Heading */}
       <h1
-        className="absolute top-4 left-0 right-0 text-center text-5xl font-bold mt-4"
+        className="absolute top-4 left-0 right-0 text-center text-5xl font-bold mt-4 mx-auto w-56"
         style={{
           fontFamily: "'Rammetto One'",
           color: "#283c9f",
