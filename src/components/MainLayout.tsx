@@ -115,10 +115,11 @@ const MainLayout: React.FC = () => {
   };
 
   const handleCreateNewEvent = () => {
+    const newEventId = events.length + 1;
     const newEvent: EventData = {
       id: events.length + 1,
-      title: "New Event",
-      name: "New Event Name",
+      title: `New Event ${newEventId}`, // Uppdatera för att inkludera numret
+      name: `New Event ${newEventId}`,
       location: "",
       date: "",
       startTime: "",
