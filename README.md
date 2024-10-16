@@ -51,7 +51,7 @@ Make sure everything is working correctly by visiting the local server URL in yo
 ## Additional Information
 
 - **OpenAI API Key**: Make sure your `.env` file is not pushed to version control by adding it to your `.gitignore` file if it’s not already excluded.
-  
+
 ```plaintext
 .env
 ```
